@@ -14,7 +14,7 @@ from product.permission import IsreviewAuthororreadonly
 
     
 class PoductViewset(ModelViewSet):
-    queryset = Product.objects.all()
+
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     serializer_class=Productserilizer
     filterset_class = productfilter
@@ -22,6 +22,9 @@ class PoductViewset(ModelViewSet):
     search_fields = ['name','description']
     ordering_fields=['price']
     permission_classes = [IsadminOrReadonly]
+
+    def get_queryset(self):
+        return Product.objects.prefetch_related('images').all()
 
 
 
